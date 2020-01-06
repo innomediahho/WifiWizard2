@@ -3,6 +3,7 @@
 @interface WifiWizard2 : CDVPlugin
 
 // Main functions
+- (void)iOSConnectOpenSsidPrefix:(CDVInvokedUrlCommand *)command;
 - (void)iOSConnectNetwork:(CDVInvokedUrlCommand *)command;
 - (void)iOSConnectOpenNetwork:(CDVInvokedUrlCommand *)command;
 - (void)iOSDisconnectNetwork:(CDVInvokedUrlCommand *)command;

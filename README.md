@@ -71,12 +71,16 @@ For functionality, you need to note the following:
  - Can't run in the simulator so you need to attach an actual device when building with xCode
  - Will ensure 'HotspotConfiguration' and 'NetworkExtensions' capabilities are added to your xCode project
  - To connect to open network omit `ssidPassword` or call with `false`
+ - iOSConnectOpenSsidPrefix only works for iOS13+ 
 
 ```javascript
 WifiWizard2.iOSConnectNetwork(ssid, ssidPassword)
 ```
 ```javascript
 WifiWizard2.iOSDisconnectNetwork(ssid)
+```
+```javascript
+WifiWizard2.iOSConnectOpenSsidPrefix(ssidPrefix)
 ```
 
 # Android Functions
@@ -408,6 +412,9 @@ License
 Apache 2.0
 
 ## Changelog:
+
+#### ios-ssidprefix-join branch - January 6, 2020
+- Added iOSConnectOpenSsidPrefix to join based on SSID prefix name (requires iOS 13.0)
 
 #### 3.1.0 - August 28, 2018
 - Fixed/Added compatibility with iOS to connect to open network

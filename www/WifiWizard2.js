@@ -16,6 +16,27 @@
 var WifiWizard2 = {
 
 	/**
+     * Connect to open SSID network on iOS device using SSID prefix pattern
+	 * @param ssidPrefix        SSID prefix pattern
+	 * @returns {Promise}
+	 */
+	iOSConnectOpenSsidPrefix: function (ssidPrefix) {
+
+        return new Promise(function (resolve, reject) {
+            if( ssidPrefix !== undefined && ssidPrefix.length > 1 ){
+                // iOS connect open network
+                cordova.exec(resolve, reject, "WifiWizard2", "iOSConnectOpenSsidPrefix", 
+                    [{ "SsidPrefix": ssidPrefix }]
+                );
+            }
+            else {
+                reject("SSID prefix not provided!");
+            }
+        });
+
+    },
+
+	/**
      * Connect to network on iOS device
 	 * @param ssid
 	 * @param ssidPassword      Password if connecting to WPA/WPA2 network (omit or use false to connect to open network)

@@ -37,6 +37,53 @@
     return [cset countForObject:@"awdl0"] > 1 ? YES : NO;
 }
 
+- (void)iOSConnectOpenSsidPrefix:(CDVInvokedUrlCommand*)command {
+
+    __block CDVPluginResult *pluginResult = nil;
+
+    NSString * ssidPrefixString;
+    NSDictionary* options = [[NSDictionary alloc]init];
+
+    options = [command argumentAtIndex:0];
+    ssidPrefixString = [options objectForKey:@"SsidPrefix"];
+
+    if (@available(iOS 13.0, *)) {
+        if (ssidPrefixString && [ssidPrefixString length]) {
+            NEHotspotConfiguration *configuration = [[NEHotspotConfiguration
+                    alloc] initWithSSIDPrefix:ssidPrefixString];
+
+            configuration.joinOnce = false;
+
+            [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
+
+                NSDictionary *r = [self fetchSSIDInfo];
+
+                NSString *ssid = [r objectForKey:(id)kCNNetworkInfoKeySSID]; //@"SSID"
+
+                if ([ssid isEqualToString:ssidPrefixString]){
+                    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:ssidPrefixString];
+                }else{
+                    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.description];
+                }
+                [self.commandDelegate sendPluginResult:pluginResult
+                                            callbackId:command.callbackId];
+            }];
+
+
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"SSID Not provided"];
+            [self.commandDelegate sendPluginResult:pluginResult
+                                        callbackId:command.callbackId];
+        }
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"iOS 13+ not available"];
+        [self.commandDelegate sendPluginResult:pluginResult
+                                    callbackId:command.callbackId];
+    }
+
+
+}
+
 - (void)iOSConnectNetwork:(CDVInvokedUrlCommand*)command {
     
     __block CDVPluginResult *pluginResult = nil;
